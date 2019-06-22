@@ -4,8 +4,8 @@ The style-transfering Telegram-bot.
 This program implements the telegram-bot which transfers style online from the Style Image to the Content Image and and gives out the Styled Image.
 You have to prepare two images - the Content Image and the Style Image in order to send them to the telegram-bot during user-dialog.
 
-Before running the program the next set of libraries must be insalled:
-install numpy
+Before running the program the next set of libraries must be insalled:/n
+install numpy/n
 install pillow
 install -U torch torchvision
 install scipy
