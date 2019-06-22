@@ -4,13 +4,13 @@ The style-transfering Telegram-bot.
 This program implements the telegram-bot which transfers style online from the Style Image to the Content Image and and gives out the Styled Image.
 You have to prepare two images - the Content Image and the Style Image in order to send them to the telegram-bot during user-dialog.
 
-Before running the program the next set of libraries must be insalled:/n
-install numpy/n
-install pillow
-install -U torch torchvision
-install scipy
-install pyTelegramBotAPI
-install python-telegram-bot
+Before running the program the next set of libraries must be insalled:
+1) install numpy
+2) install pillow
+3) install -U torch torchvision
+4) install scipy
+5) install pyTelegramBotAPI
+6) install python-telegram-bot
 
 Then do the following:
 1) git clone --quiet https://github.com/yukonta/EasyStyle  
