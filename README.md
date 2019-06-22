@@ -15,8 +15,8 @@ Then do the following:
 3) Change the current catalog to EasyStyle
 4) Run main.py
 
-5) Find in Telegram the channel EasyStyle
-6) Input the command /start
+5) Find in Telegram the Telegram-bot EasyStyle 
+6) Send the command /start to the Telegram-bot
 7) Follow the instructions in the dialog
 
 
