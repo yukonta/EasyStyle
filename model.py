@@ -1,4 +1,4 @@
-from neural_style.transformer_net import TransformerNet
+﻿from neural_style.transformer_net import TransformerNet
 from neural_style import utils
 
 from PIL import Image
@@ -148,7 +148,7 @@ class StyleTransferModel:
             agg_style_loss = 0.
             count = 0
             for batch_id, (x, _) in enumerate(train_loader):
-                print('Epoch=', e, 'Batch_id=', batch_id)
+                #print('Epoch=', e+1, 'Batch_id=', batch_id)
                 n_batch = len(x)
                 count += n_batch
                 optimizer.zero_grad()
