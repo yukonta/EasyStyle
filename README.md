@@ -16,7 +16,7 @@ Before running the program the next set of libraries must be insalled:
 Then do the following:
 1) git clone --quiet https://github.com/yukonta/EasyStyle  
 2) In the catalog EasyStyle download the file telegram_token.py which contains the telegram-token в формате token = '<token>'
-3) Unzip the file train2014_1000.zip from https://drive.google.com/drive/folders/1ibbe5wFviLDYzz-7SWPr0xd4alpn-Xgs into the catalog EasyStyle/neural_style/dataset_dir/train2014
+3) Unzip the file train2014_1000.zip from https://drive.google.com/file/d/1Oq5LC-COUqftgsN3BQelteLOjuWjiPvA/view?usp=sharing into the catalog EasyStyle/neural_style/dataset_dir/train2014
 4) Change the current catalog to EasyStyle
 5) In the file EasyStyle/config.py (in the first string) set the actual proxy SOCKS4 for Telegram. The actual proxy address you can find in the file  https://proxyscrape.com/free-proxy-list (you need SOCKS4) - download the file and choose the address.
 
