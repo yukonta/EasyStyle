@@ -49,7 +49,7 @@ class StyleTransferModel:
                                     save_model_dir='neural_style/save_model_dir',
                                     checkpoint_model_dir='neural_style/checkpoint_model_dir',
 #                                    epochs=2, batch_size=8, image_size=64,log_interval=2,checkpoint_interval=2,
-                                    epochs=4, batch_size=4, image_size=256, log_interval=50, checkpoint_interval=500,
+                                    epochs=6, batch_size=4, image_size=256, log_interval=50, checkpoint_interval=500,
                                     seed=42, arg_cuda=1, content_weight=1e5, style_weight=1e10, lr=1e-3
                                     )
 
