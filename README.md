@@ -1,7 +1,7 @@
 # EasyStyle
 The style-transfering Telegram-bot.
 
-This program implements the telegram-bot which transfers style online from the style-image to the content-image and and gives out the styled image.
+This program implements the telegram-bot which transfers style online from the style-image to the content-image and gives out the styled image.
 You have to prepare two images - the content-image and the style-image in order to send them to the telegram-bot during user-dialog.
 
 Before running the program the next set of libraries must be insalled:
