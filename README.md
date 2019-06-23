@@ -9,7 +9,7 @@ Before running the program the next set of libraries must be insalled:
 2) import torch
 3) install pillow
 4) install -U torch torchvision
-5) install scipy
+5) install scipy==1.0.0
 6) install pyTelegramBotAPI
 7) install python-telegram-bot
 
