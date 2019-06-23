@@ -28,7 +28,7 @@ class StyleTransferModel:
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         print(self.device)
         #imsize = 128
-        imsize = 128
+        imsize = 256
         self.loader = transforms.Compose([
             transforms.Resize(imsize),  # нормируем размер изображения
             transforms.CenterCrop(imsize),
@@ -49,7 +49,7 @@ class StyleTransferModel:
                                     save_model_dir='neural_style/save_model_dir',
                                     checkpoint_model_dir='neural_style/checkpoint_model_dir',
 #                                    epochs=2, batch_size=8, image_size=64,log_interval=2,checkpoint_interval=2,
-                                    epochs=4, batch_size=4, image_size=128, log_interval=50, checkpoint_interval=500,
+                                    epochs=4, batch_size=4, image_size=256, log_interval=50, checkpoint_interval=500,
                                     seed=42, arg_cuda=1, content_weight=1e5, style_weight=1e10, lr=1e-3
                                     )
 
@@ -65,6 +65,7 @@ class StyleTransferModel:
                                  #model_file_name='neural_style/save_model_dir/StyleTransTan.pth',
                                  fin_model_dict = fin_model_dict,
                                  arg_cuda=1)
+        device = torch.device("cpu")
         return out_image.to(device, torch.float)
 
     def stylize(self, content_img, scale,
