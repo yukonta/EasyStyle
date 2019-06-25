@@ -9,15 +9,7 @@ if you use Anaconda: from Anaconda Prompt input the command (under your shell):
 
 conda install --yes --file requirements.txt
 
-Then run the command (this installation use pip - a Python package manager):
-
-pip install pyTelegramBotAPI
-
-If you use pip (without Anaconda) you can add in the file requirements.txt the string (instead of the string "pip"):  
-
-pyTelegramBotAPI
-
-Then run the command:
+If you use pip (without Anaconda) run the command:
 
 pip install -r requirements.txt
 
