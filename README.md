@@ -6,15 +6,15 @@ You have to prepare two images - the content-image and the style-image in order 
 
 Before running the program the set of libraries from requirements.txt must be insalled.
 if you use Anaconda: from Anaconda Prompt input the command (under your shell):
-conda install --yes --file requirements.txt
-Then run the command (this installation use pip (a Python package manager)):
-pip install pyTelegramBotAPI
+conda install --yes --file requirements.txt.
+Then run the command (this installation use pip - a Python package manager):
+pip install pyTelegramBotAPI.
 
 If you use pip (without Anaconda) you can add in the file requirements.txt the string (instead of the string "pip"):  
-pyTelegramBotAPI
+pyTelegramBotAPI.
 
 Then run the command:
-pip install -r requirements.txt
+pip install -r requirements.txt.
 
 Then do the following:
 1) git clone --quiet https://github.com/yukonta/EasyStyle  
