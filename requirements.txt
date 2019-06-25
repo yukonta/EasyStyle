@@ -1,0 +1,8 @@
+numpy
+pillow
+pytorch 
+torchvision
+scipy==1.1.0
+python-telegram-bot
+scipy
+pip
