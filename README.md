@@ -26,6 +26,6 @@ Then do the following:
 8) Send the command /start to the Telegram-bot
 9) Follow the instructions in the dialog: The Telegram-bot will ask you if you want to make wonderfull pictures. You have to press button "YES" or "NO". If you press "YES" the bot will offer to enter two images - first the content-image, then it will offer to enter the style-image. Then you have to wait a little (about 5 minutes) and the bot will give you the styled image (in which the style is superimposed on the content).
 
-
+(If you have the error "AttributeError: module 'scipy.misc' has no attribute 'toimage' "  then make: pip install scipy==1.0.0)
 
 
