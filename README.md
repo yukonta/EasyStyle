@@ -2,7 +2,7 @@
 The style-transfering Telegram-bot.
 
 This program implements the telegram-bot which transfers style online from the style-image to the content-image and gives out the styled image.
-The program sugests to transfer one of four available styles (quickly) or transfer own style (it takes about 10 minutes).
+The program sugests to transfer one of four available styles (style transfer is fast) or transfer your own style (it takes about 10 minutes).
 
 For the first variant you have to prepare one image - content (on which the chosen available style will be transfered).
 
