@@ -2,7 +2,13 @@
 The style-transfering Telegram-bot.
 
 This program implements the telegram-bot which transfers style online from the style-image to the content-image and gives out the styled image.
-You have to prepare two images - the content-image and the style-image in order to send them to the telegram-bot during user-dialog.
+The program sugests to transfer one of four available styles (quickly) or transfer own style (it takes about 10 minutes).
+
+For the first variant you have to prepare one image - content (on which the chosen available style will be transfered).
+
+For the first variant you have to prepare two images - the content-image and the style-image.
+
+These images you can send the telegram-bot during user-dialog.
 
 Before running the program the set of libraries from requirements.txt must be insalled.
 if you use Anaconda: from Anaconda Prompt input the command (under your shell):
@@ -24,7 +30,11 @@ Then do the following:
 
 7) Find in Telegram the Telegram-bot EasyStyle 
 8) Send the command /start to the Telegram-bot
-9) Follow the instructions in the dialog: The Telegram-bot will ask you if you want to make wonderfull pictures. You have to press button "YES" or "NO". If you press "YES" the bot will offer to enter two images - first the content-image, then it will offer to enter the style-image. Then you have to wait a little (about 5 minutes) and the bot will give you the styled image (in which the style is superimposed on the content).
+9) Follow the instructions in the dialog: The Telegram-bot will show 6 buttons. Four buttons - for transfering available styles, the fifth button - for transfering your own style and the last button you can press if you don't want to continue.
+
+Then  the bot will offer to send images - 1 for transfering one of the available styles or 2 for transfering you own style (first it offers to send the content-image, then it offers to enter the style-image). Then you have to wait - about 1 minute while transfering available style or 10 minutes while transfering you own style (the program must train the neural net).
+
+Then the bot will give you the styled image (the style is superimposed on the content).
 
 (If you have the error "AttributeError: module 'scipy.misc' has no attribute 'toimage' "  then make: pip install scipy==1.0.0)
 
