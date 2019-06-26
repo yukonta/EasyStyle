@@ -39,8 +39,9 @@ Then the bot will give you the styled image (the style is superimposed on the co
 
 
 Also you can run the Telegram-Bot in Jupiter Notebook EasyStyle_neural_style.ipynb (it is also placed in EasyStyle github project).
-For run the Telegram-Bot you have to run all sells in the notebook.
-Do not foget to add the file telegram_token.py  in the catalog EasyStyle.
+For run the Telegram-Bot you have to run all sells in the notebook. Do not foget to add the file telegram_token.py  in the catalog EasyStyle.
+The notebook downloads the project EasyStyle from github, then  downloads the train-set of pictures from google-drive, then run the program, which allows you communicate with bot, train the model for style-transfer and make the transfer of the chosen style. 
+
 
 
 
