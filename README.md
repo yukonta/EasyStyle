@@ -27,6 +27,7 @@ Then do the following:
 5) In the file EasyStyle/config.py (in the first string) set the actual proxy SOCKS4 for Telegram. The actual proxy address you can find in the file  https://proxyscrape.com/free-proxy-list (you need SOCKS4) - download the file and choose the address.
 
 6) Run main.py
+(If you have the error "AttributeError: module 'scipy.misc' has no attribute 'toimage' "  then make: pip install scipy==1.0.0)
 
 7) Find in Telegram the Telegram-bot EasyStyle 
 8) Send the command /start to the Telegram-bot
@@ -36,6 +37,10 @@ Then  the bot will offer to send images - one for transfering the available styl
 
 Then the bot will give you the styled image (the style is superimposed on the content).
 
-(If you have the error "AttributeError: module 'scipy.misc' has no attribute 'toimage' "  then make: pip install scipy==1.0.0)
+
+Also you can run the Telegram-Bot in Jupiter Notebook EasyStyle_neural_style.ipynb (it is also placed in EasyStyle github project).
+For run the Telegram-Bot you have to run all sells in the notebook.
+Do not foget to add the file telegram_token.py  in the catalog EasyStyle.
+
 
 
