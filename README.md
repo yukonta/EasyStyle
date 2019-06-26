@@ -8,7 +8,7 @@ For the first variant you have to prepare one image - content (on which the chos
 
 For the first variant you have to prepare two images - the content-image and the style-image.
 
-These images you can send the telegram-bot during user-dialog.
+These images you can send to the telegram-bot during user-dialog.
 
 Before running the program the set of libraries from requirements.txt must be insalled.
 if you use Anaconda: from Anaconda Prompt input the command (under your shell):
