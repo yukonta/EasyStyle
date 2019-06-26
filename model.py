@@ -25,8 +25,18 @@ from neural_style.vgg import Vgg16
 class StyleTransferModel:
     def __init__(self):
         # Сюда необходимо перенести всю иницализацию, вроде загрузки свеерточной сети и т.д.
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+      
+        use_gpu = torch.cuda.is_available()
+        if not use_gpu:
+            self.arg_cuda = 0
+            print('CUDA is not available.  Use CPU ...')
+        else:
+            self.arg_cuda = 1
+            print('CUDA is available!  Use GPU ...')
+
+        self.device = torch.device("cuda" if use_gpu else "cpu")
         print(self.device)
+
         #imsize = 128
         imsize = 256
         self.loader = transforms.Compose([
@@ -49,8 +59,8 @@ class StyleTransferModel:
                                     save_model_dir='neural_style/save_model_dir',
                                     checkpoint_model_dir='neural_style/checkpoint_model_dir',
 #                                    epochs=2, batch_size=8, image_size=64,log_interval=2,checkpoint_interval=2,
-                                    epochs=6, batch_size=4, image_size=256, log_interval=50, checkpoint_interval=500,
-                                    seed=42, arg_cuda=1, content_weight=1e5, style_weight=1e10, lr=1e-3
+                                    epochs=4, batch_size=4, image_size=256, log_interval=50, checkpoint_interval=500,
+                                    seed=42, arg_cuda=self.arg_cuda, content_weight=1e5, style_weight=1e10, lr=1e-3
                                     )
 
         return misc.toimage(self.process_image(content_img_stream,fin_model_dict)[0])
@@ -64,7 +74,7 @@ class StyleTransferModel:
         out_image = self.stylize(content_img=image, scale=1,
                                  #model_file_name='neural_style/save_model_dir/StyleTransTan.pth',
                                  fin_model_dict = fin_model_dict,
-                                 arg_cuda=1)
+                                 arg_cuda=self.arg_cuda)
         device = torch.device("cpu")
         return out_image.to(device, torch.float)
 
