@@ -47,21 +47,24 @@ class StyleTransferModel:
 
         pass
 
-    def transfer_style(self, content_img_stream, style_img_stream):
+    def transfer_style(self, content_img_stream, style_img_stream, style_type):
         # В телеграм боте мы получаем поток байтов BytesIO,
         # а мы хотим спрятать в этот метод всю работу с картинками, поэтому лучше принимать тут эти самые потоки
         # и потом уже приводить их к PIL, а потом и к тензору, который уже можно отдать модели.
 
         style_img = Image.open(style_img_stream)
         #self.train(dataset = 'neural_style/dataset_dir', style_img = style_img, save_model_dir = 'neural_style/save_model_dir', checkpoint_model_dir = 'neural_style/checkpoint_model_dir', epochs=2, batch_size=4, image_size=256, seed=42, arg_cuda=0, content_weight=1e5, style_weight=1e10, lr=1e-3, log_interval=500, checkpoint_interval=2000)
-
-        fin_model_dict = self.train(dataset='neural_style/dataset_dir', style_img=style_img,
-                                    save_model_dir='neural_style/save_model_dir',
-                                    checkpoint_model_dir='neural_style/checkpoint_model_dir',
-#                                    epochs=2, batch_size=8, image_size=64,log_interval=2,checkpoint_interval=2,
-                                    epochs=4, batch_size=4, image_size=256, log_interval=50, checkpoint_interval=500,
-                                    seed=42, arg_cuda=self.arg_cuda, content_weight=1e5, style_weight=1e10, lr=1e-3
-                                    )
+        if (style_type == 'own'):
+            fin_model_dict = self.train(dataset='neural_style/dataset_dir', style_img=style_img,
+                                        save_model_dir='neural_style/save_model_dir',
+                                        checkpoint_model_dir='neural_style/checkpoint_model_dir',
+    #                                    epochs=2, batch_size=8, image_size=64,log_interval=2,checkpoint_interval=2,
+                                        epochs=10, batch_size=4, image_size=256, log_interval=50, checkpoint_interval=500,
+                                        seed=42, arg_cuda=self.arg_cuda, content_weight=1e5, style_weight=1e10, lr=1e-3
+                                        )
+        else: #style_type == 'candy' OR 'mosaic' OR 'rain_princess' OR 'udnie'
+            model_file_name = 'neural_style/saved_models/' + style_type + '.pth'
+            fin_model_dict = torch.load(model_file_name) #NNN
 
         return misc.toimage(self.process_image(content_img_stream,fin_model_dict)[0])
 
