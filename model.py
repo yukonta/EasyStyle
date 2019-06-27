@@ -20,12 +20,13 @@ from torch.utils.data import DataLoader
 from torchvision import datasets
 from neural_style.vgg import Vgg16
 
+
 # В данном классе мы хотим полностью производить всю обработку картинок, которые поступают к нам из телеграма.
 
 class StyleTransferModel:
     def __init__(self):
         # Сюда необходимо перенести всю иницализацию, вроде загрузки свеерточной сети и т.д.
-      
+
         use_gpu = torch.cuda.is_available()
         if not use_gpu:
             self.arg_cuda = 0
@@ -37,7 +38,7 @@ class StyleTransferModel:
         self.device = torch.device("cuda" if use_gpu else "cpu")
         print(self.device)
 
-        #imsize = 128
+        # imsize = 128
         imsize = 256
         self.loader = transforms.Compose([
             transforms.Resize(imsize),  # нормируем размер изображения
@@ -53,21 +54,20 @@ class StyleTransferModel:
         # и потом уже приводить их к PIL, а потом и к тензору, который уже можно отдать модели.
 
         style_img = Image.open(style_img_stream)
-        #self.train(dataset = 'neural_style/dataset_dir', style_img = style_img, save_model_dir = 'neural_style/save_model_dir', checkpoint_model_dir = 'neural_style/checkpoint_model_dir', epochs=2, batch_size=4, image_size=256, seed=42, arg_cuda=0, content_weight=1e5, style_weight=1e10, lr=1e-3, log_interval=500, checkpoint_interval=2000)
+        # self.train(dataset = 'neural_style/dataset_dir', style_img = style_img, save_model_dir = 'neural_style/save_model_dir', checkpoint_model_dir = 'neural_style/checkpoint_model_dir', epochs=2, batch_size=4, image_size=256, seed=42, arg_cuda=0, content_weight=1e5, style_weight=1e10, lr=1e-3, log_interval=500, checkpoint_interval=2000)
         if (style_type == 'own'):
             fin_model_dict = self.train(dataset='neural_style/dataset_dir', style_img=style_img,
                                         save_model_dir='neural_style/save_model_dir',
                                         checkpoint_model_dir='neural_style/checkpoint_model_dir',
-    #                                    epochs=2, batch_size=8, image_size=64,log_interval=2,checkpoint_interval=2,
-                                        epochs=10, batch_size=4, image_size=256, log_interval=50, checkpoint_interval=500,
+                                        epochs=10, batch_size=4, image_size=256, log_interval=50,
+                                        checkpoint_interval=500,
                                         seed=42, arg_cuda=self.arg_cuda, content_weight=1e5, style_weight=1e10, lr=1e-3
                                         )
-        else: #style_type == 'candy' OR 'mosaic' OR 'rain_princess' OR 'udnie'
+        else:  # style_type == 'candy' OR 'mosaic' OR 'rain_princess' OR 'udnie'
             model_file_name = 'neural_style/saved_models/' + style_type + '.pth'
-            fin_model_dict = torch.load(model_file_name) #NNN
+            fin_model_dict = torch.load(model_file_name)  # NNN
 
-        return misc.toimage(self.process_image(content_img_stream,fin_model_dict)[0])
-
+        return misc.toimage(self.process_image(content_img_stream, fin_model_dict)[0])
 
     def process_image(self, img_stream, fin_model_dict):
         device = self.device
@@ -75,14 +75,14 @@ class StyleTransferModel:
         image = self.loader(image)
 
         out_image = self.stylize(content_img=image, scale=1,
-                                 #model_file_name='neural_style/save_model_dir/StyleTransTan.pth',
-                                 fin_model_dict = fin_model_dict,
+                                 # model_file_name='neural_style/save_model_dir/StyleTransTan.pth',
+                                 fin_model_dict=fin_model_dict,
                                  arg_cuda=self.arg_cuda)
         device = torch.device("cpu")
         return out_image.to(device, torch.float)
 
     def stylize(self, content_img, scale,
-               # model_file_name,
+                # model_file_name,
                 fin_model_dict,
                 arg_cuda=0):
         device = torch.device("cuda" if arg_cuda else "cpu")
@@ -102,9 +102,8 @@ class StyleTransferModel:
         with torch.no_grad():
             style_model = TransformerNet()
 
-            #state_dict = torch.load(model_file_name) #NNN
-            state_dict = fin_model_dict  #NNN
-
+            # state_dict = torch.load(model_file_name) #NNN
+            state_dict = fin_model_dict  # NNN
 
             # remove saved deprecated running_* keys in InstanceNorm from the checkpoint
             for k in list(state_dict.keys()):
@@ -119,9 +118,9 @@ class StyleTransferModel:
         return output
         # utils.save_image(args.output_image, output[0])
 
-
-    def train(self, dataset, style_img, save_model_dir, checkpoint_model_dir, epochs = 2, batch_size = 4, image_size = 256,
-              seed = 42, arg_cuda = 0, content_weight = 1e5, style_weight = 1e10, lr = 1e-3, log_interval = 500, checkpoint_interval = 2000):
+    def train(self, dataset, style_img, save_model_dir, checkpoint_model_dir, epochs=2, batch_size=4, image_size=256,
+              seed=42, arg_cuda=0, content_weight=1e5, style_weight=1e10, lr=1e-3, log_interval=500,
+              checkpoint_interval=2000):
 
         device = torch.device("cuda" if arg_cuda else "cpu")
 
@@ -145,22 +144,22 @@ class StyleTransferModel:
             transforms.ToTensor(),
             transforms.Lambda(lambda x: x.mul(255))
         ])
-        #style = utils.load_image(args.style_image, size= None) # NNN
-        style = style_img # NNN
+        # style = utils.load_image(args.style_image, size= None) # NNN
+        style = style_img  # NNN
 
         style = style_transform(style)
         style = style.repeat(batch_size, 1, 1, 1).to(device)
 
         features_style = vgg(utils.normalize_batch(style))
         gram_style = [utils.gram_matrix(y) for y in features_style]
-        print('Epochs = ',epochs)
+        print('Epochs = ', epochs)
         for e in range(epochs):
             transformer.train()
             agg_content_loss = 0.
             agg_style_loss = 0.
             count = 0
             for batch_id, (x, _) in enumerate(train_loader):
-                #print('Epoch=', e+1, 'Batch_id=', batch_id)
+                # print('Epoch=', e+1, 'Batch_id=', batch_id)
                 n_batch = len(x)
                 count += n_batch
                 optimizer.zero_grad()
@@ -210,8 +209,8 @@ class StyleTransferModel:
         save_model_filename = "epoch_" + str(epochs) + "_" + str(time.ctime()).replace(' ', '_') + "_" + str(
             content_weight) + "_" + str(style_weight) + ".model"
         save_model_path = os.path.join(save_model_dir, save_model_filename)
-        #torch.save(transformer.state_dict(), save_model_path) #NNN
-        #torch.save(transformer.state_dict(), 'neural_style/save_model_dir/StyleTransTan.model') #NNN
+        # torch.save(transformer.state_dict(), save_model_path) #NNN
+        # torch.save(transformer.state_dict(), 'neural_style/save_model_dir/StyleTransTan.model') #NNN
         fin_model_dict = transformer.state_dict()
         torch.save(fin_model_dict, 'neural_style/save_model_dir/StyleTransTan.pth')  # NNN
 

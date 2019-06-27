@@ -3,7 +3,8 @@ from neural_style.transformer_net import TransformerNet
 
 import telebot
 from telegram_token import token
-from config import ProxyURL, StartMsg, WantTalkMsg1, WantTalkMsg2, CancelMsg, WaitStylingMsg, WaitStylingMsg10min, NextActMsg
+from config import ProxyURL, StartMsg, WantTalkMsg1, WantTalkMsg2, CancelMsg, WaitStylingMsg, WaitStylingMsg10min, \
+    NextActMsg
 import numpy as np
 from PIL import Image
 from io import BytesIO
@@ -32,36 +33,39 @@ first_image_file = {}
 CANDY, MOSAIC, RAIN, UDNIE, OWN, NEXT_PHOTO, WANT_TALK, NEXT_ACT = range(8)
 reply_keyboard = [['candy', 'mosaic', 'rain', 'udnie'], ['OWN STYLE', 'I do not want to continue']]
 
+
 # реакция на "/start"
 def start(bot, update):
-
     print('User Start')
     update.message.reply_text(
         StartMsg,
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True, resize_keyboard=True))
 
     return WANT_TALK
+
+
 # метод  - реакция на нажатие кнопок Yes/No"
 def want_talk(bot, update):
-     text = update.message.text
-     print (text)
-     if text == reply_keyboard [0][0]:
-         update.message.reply_text(WantTalkMsg1, reply_markup=ReplyKeyboardRemove())
-         return CANDY
-     elif text == reply_keyboard [0][1]:
-         update.message.reply_text(WantTalkMsg1, reply_markup=ReplyKeyboardRemove())
-         return MOSAIC
-     elif text == reply_keyboard [0][2]:
-         update.message.reply_text(WantTalkMsg1, reply_markup=ReplyKeyboardRemove())
-         return RAIN
-     elif text == reply_keyboard [0][3]:
-         update.message.reply_text(WantTalkMsg1, reply_markup=ReplyKeyboardRemove())
-         return UDNIE
-     elif text == reply_keyboard [1][0]:
-         update.message.reply_text(WantTalkMsg2, reply_markup=ReplyKeyboardRemove())
-         return OWN
-     else:
-         return cancel(bot, update)
+    text = update.message.text
+    print(text)
+    if text == reply_keyboard[0][0]:
+        update.message.reply_text(WantTalkMsg1, reply_markup=ReplyKeyboardRemove())
+        return CANDY
+    elif text == reply_keyboard[0][1]:
+        update.message.reply_text(WantTalkMsg1, reply_markup=ReplyKeyboardRemove())
+        return MOSAIC
+    elif text == reply_keyboard[0][2]:
+        update.message.reply_text(WantTalkMsg1, reply_markup=ReplyKeyboardRemove())
+        return RAIN
+    elif text == reply_keyboard[0][3]:
+        update.message.reply_text(WantTalkMsg1, reply_markup=ReplyKeyboardRemove())
+        return UDNIE
+    elif text == reply_keyboard[1][0]:
+        update.message.reply_text(WantTalkMsg2, reply_markup=ReplyKeyboardRemove())
+        return OWN
+    else:
+        return cancel(bot, update)
+
 
 # реакция на "/cancel"
 def cancel(bot, update):
@@ -70,9 +74,11 @@ def cancel(bot, update):
 
     return ConversationHandler.END
 
+
 def error(bot, update, error):
-    #Log Errors caused by Updates.
+    # Log Errors caused by Updates.
     logger.warning('Update "%s" caused error "%s"' % (update, error))
+
 
 # Получаем две картинки, после второй запускаем перенос стиля (transfer_style)
 def send_prediction_on_photo_own(bot, update):
@@ -107,7 +113,7 @@ def send_prediction_on_photo_own(bot, update):
             NextActMsg,
             reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True, resize_keyboard=True))
         return WANT_TALK
-        #update.message.reply_text(AfterStylingMsg)
+        # update.message.reply_text(AfterStylingMsg)
 
     else:
         print('    -the first (content) image')
@@ -116,7 +122,6 @@ def send_prediction_on_photo_own(bot, update):
 
 
 def send_prediction_on_photo_candy(bot, update):
-
     update.message.reply_text(WaitStylingMsg)
     chat_id = update.message.chat_id
     print("Got image from {}".format(chat_id))
@@ -126,7 +131,6 @@ def send_prediction_on_photo_candy(bot, update):
     print('    -the content image')
     content_image_stream = BytesIO()
     image_file.download(out=content_image_stream)
-
 
     style_type = 'candy'
     output = model.transfer_style(content_image_stream, content_image_stream, style_type)
@@ -165,6 +169,7 @@ def send_prediction_on_photo_mosaic(bot, update):
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True, resize_keyboard=True))
     return WANT_TALK
 
+
 def send_prediction_on_photo_rain_princess(bot, update):
     update.message.reply_text(WaitStylingMsg)
     chat_id = update.message.chat_id
@@ -187,6 +192,7 @@ def send_prediction_on_photo_rain_princess(bot, update):
         NextActMsg,
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True, resize_keyboard=True))
     return WANT_TALK
+
 
 def send_prediction_on_photo_udnie(bot, update):
     update.message.reply_text(WaitStylingMsg)
@@ -211,8 +217,8 @@ def send_prediction_on_photo_udnie(bot, update):
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True, resize_keyboard=True))
     return WANT_TALK
 
-if __name__ == '__main__':
 
+if __name__ == '__main__':
     # используем прокси"socks4 proxy"
 
     # создаём апдейтер и передаём им наш токен, который был выдан после создания бота
@@ -239,7 +245,6 @@ if __name__ == '__main__':
         fallbacks=[CommandHandler('cancel', cancel)]
     )
 
-
     dp.add_handler(conv_handler)
 
     # log all errors
@@ -248,4 +253,4 @@ if __name__ == '__main__':
     # Start the Bot
     updater.start_polling()
     # Останавливаем бота, если были нажаты Ctrl + C
-    #updater.idle()
+    # updater.idle()
