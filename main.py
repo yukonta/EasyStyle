@@ -1,4 +1,4 @@
-from model import StyleTransferModel
+﻿from model import StyleTransferModel
 from neural_style.transformer_net import TransformerNet
 
 import telebot
@@ -127,9 +127,6 @@ def send_prediction_on_photo_candy(bot, update):
     print('    -the content image')
     content_image_stream = BytesIO()
     image_file.download(out=content_image_stream)
-
-    text = update.message.text
-  
     style_type = 'candy'
     output = model.transfer_style(content_image_stream, content_image_stream, style_type)
     # теперь отправим назад фото
