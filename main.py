@@ -44,7 +44,7 @@ def start(bot, update):
     return WANT_TALK
 
 
-# метод  - реакция на нажатие кнопок Yes/No"
+# метод  - реакция на нажатие кнопок выбора метода стилизации"
 def want_talk(bot, update):
     text = update.message.text
     print(text)
@@ -120,19 +120,19 @@ def send_prediction_on_photo_own(bot, update):
         first_image_file[chat_id] = image_file
         return NEXT_PHOTO
 
-
+# перенос стиля 'candy'
 def send_prediction_on_photo_candy(bot, update):
     update.message.reply_text(WaitStylingMsg)
     chat_id = update.message.chat_id
     print("Got image from {}".format(chat_id))
-    # получаем информацию о картинке
+    # получаем информацию о картинке контента
     image_info = update.message.photo[-1]
     image_file = bot.get_file(image_info)
     print('    -the content image')
     content_image_stream = BytesIO()
     image_file.download(out=content_image_stream)
-
     style_type = 'candy'
+    # выполнение переноса стиля
     output = model.transfer_style(content_image_stream, content_image_stream, style_type)
     # теперь отправим назад фото
     output_stream = BytesIO()
@@ -145,18 +145,19 @@ def send_prediction_on_photo_candy(bot, update):
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True, resize_keyboard=True))
     return WANT_TALK
 
-
+# перенос стиля 'mosaic'
 def send_prediction_on_photo_mosaic(bot, update):
     update.message.reply_text(WaitStylingMsg)
     chat_id = update.message.chat_id
     print("Got image from {}".format(chat_id))
-    # получаем информацию о картинке
+    # получаем информацию о картинке контента
     image_info = update.message.photo[-1]
     image_file = bot.get_file(image_info)
     print('    -the content image')
     content_image_stream = BytesIO()
     image_file.download(out=content_image_stream)
     style_type = 'mosaic'
+    # выполнение переноса стиля
     output = model.transfer_style(content_image_stream, content_image_stream, style_type)
     # теперь отправим назад фото
     output_stream = BytesIO()
@@ -169,18 +170,19 @@ def send_prediction_on_photo_mosaic(bot, update):
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True, resize_keyboard=True))
     return WANT_TALK
 
-
+# перенос стиля 'rain_princess'
 def send_prediction_on_photo_rain_princess(bot, update):
     update.message.reply_text(WaitStylingMsg)
     chat_id = update.message.chat_id
     print("Got image from {}".format(chat_id))
-    # получаем информацию о картинке
+    # получаем информацию о картинке контента
     image_info = update.message.photo[-1]
     image_file = bot.get_file(image_info)
     print('    -the content image')
     content_image_stream = BytesIO()
     image_file.download(out=content_image_stream)
     style_type = 'rain_princess'
+    # выполнение переноса стиля
     output = model.transfer_style(content_image_stream, content_image_stream, style_type)
     # теперь отправим назад фото
     output_stream = BytesIO()
@@ -193,18 +195,19 @@ def send_prediction_on_photo_rain_princess(bot, update):
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True, resize_keyboard=True))
     return WANT_TALK
 
-
+# перенос стиля 'udnie'
 def send_prediction_on_photo_udnie(bot, update):
     update.message.reply_text(WaitStylingMsg)
     chat_id = update.message.chat_id
     print("Got image from {}".format(chat_id))
-    # получаем информацию о картинке
+    # получаем информацию о картинке контента
     image_info = update.message.photo[-1]
     image_file = bot.get_file(image_info)
     print('    -the content image')
     content_image_stream = BytesIO()
     image_file.download(out=content_image_stream)
     style_type = 'udnie'
+    # выполнение переноса стиля
     output = model.transfer_style(content_image_stream, content_image_stream, style_type)
     # теперь отправим назад фото
     output_stream = BytesIO()

@@ -25,7 +25,7 @@ from neural_style.vgg import Vgg16
 
 class StyleTransferModel:
     def __init__(self):
-
+        # проверяем, доступен ли GPU
         use_gpu = torch.cuda.is_available()
         if not use_gpu:
             self.arg_cuda = 0
@@ -47,11 +47,17 @@ class StyleTransferModel:
         pass
 
     def transfer_style(self, content_img_stream, style_img_stream, style_type):
+        # content_img_stream - поток, содеержащий изображение контента
+        # style_img_stream - поток, содержащий изображение стиля
+        # style_type - тип стиля
+
         # В телеграм боте мы получаем поток байтов BytesIO,
         # а мы хотим спрятать в этот метод всю работу с картинками, поэтому лучше принимать тут эти самые потоки
         # и потом уже приводить их к PIL, а потом и к тензору, который уже можно отдать модели.
 
         style_img = Image.open(style_img_stream)
+
+        # тренинг выполняем только если выбран тип стиля 'own' (собственный стиль)
         if (style_type == 'own'):
             fin_model_dict = self.train(dataset='neural_style/dataset_dir', style_img=style_img,
                                         save_model_dir='neural_style/save_model_dir',
@@ -61,13 +67,18 @@ class StyleTransferModel:
                                         seed=42, arg_cuda=self.arg_cuda, content_weight=1e5, style_weight=1e10, lr=1e-3
                                         )
         else:  # style_type == 'candy' OR 'mosaic' OR 'rain_princess' OR 'udnie'
+            # если пользователем выбраны готовые модели - загружаем их из файла
             model_file_name = 'neural_style/saved_models/' + style_type + '.pth'
-            fin_model_dict = torch.load(model_file_name)  # NNN
-
+            fin_model_dict = torch.load(model_file_name)
+        # выполняем перенос стиля
         return misc.toimage(self.process_image(content_img_stream, fin_model_dict)[0])
 
+    # Перенос стиля
     def process_image(self, img_stream, fin_model_dict):
-        #device = self.device
+        # img_stream - поток, содержащий изображение стиля
+        # fin_model_dict - параметры модели ( вычисленные при тренинге, если пользователь выбрал 'own',
+        # либо загруженные из файла, если пользователь выбрал стили 'candy', 'mosaic', 'rain', 'udnie'
+
         image = Image.open(img_stream)
         image = self.loader(image)
 
@@ -78,10 +89,16 @@ class StyleTransferModel:
         device = torch.device("cpu")
         return out_image.to(device, torch.float)
 
+    # Функция, выполняющая перенос стиля
     def stylize(self, content_img, scale,
                 # model_file_name,
                 fin_model_dict,
                 arg_cuda=0):
+
+        # content_img - изображение контента
+        # scale - масштаб ресайза контента
+        # arg_cuda - используется ли GPU (по умолчанию - не используется)
+
         device = torch.device("cuda" if arg_cuda else "cpu")
 
         # content_image = utils.load_image(args.content_image, scale = content_scale)
@@ -115,9 +132,26 @@ class StyleTransferModel:
         return output
         # utils.save_image(args.output_image, output[0])
 
+    # функция тренинга модели
     def train(self, dataset, style_img, save_model_dir, checkpoint_model_dir, epochs=2, batch_size=4, image_size=256,
               seed=42, arg_cuda=0, content_weight=1e5, style_weight=1e10, lr=1e-3, log_interval=500,
               checkpoint_interval=2000):
+
+        # dataset - путь к набору данных для тренинга (каталог с картинками для тренинга внутри этого каталога)
+        # style_img - изображение стиля
+        # save_model_dir - имя каталога, где сохраняется файл с параметрами итоговой модели
+        # checkpoint_model_dir - имя каталога для сохранения файлов с параметрами моделей в процессе обучения
+        # epochs - количество эпох
+        # batch_size - размер батча
+        # image_size - размер картинки для контента и стиля (в функции выполняется трансформация изображений в соотутствии с image_size)
+        # seed - начальное значение для формирования набора случайных чисел
+        # arg_cuda - arg_cuda - используется ли GPU (по умолчанию - не используется)
+        # content_weight - "вес" контента (коэффициент, показывающий, насколько в итоговой стилизованой картинке учитывается контент)
+        # style_weight - "вес" стиля (коэффициент, показывающий, насколько в итоговой стилизованой картинке учитывается стиль)
+        # lr  - learning rate
+        # log_interval - через чколько итераций выдавать лог
+        # checkpoint_interval  - через сколько итераций сохранять параметры модели в файл
+
 
         device = torch.device("cuda" if arg_cuda else "cpu")
 
@@ -130,6 +164,7 @@ class StyleTransferModel:
             transforms.ToTensor(),
             transforms.Lambda(lambda x: x.mul(255))
         ])
+        # загружаем батч из датасета
         train_dataset = datasets.ImageFolder(dataset, transform)
         train_loader = DataLoader(train_dataset, batch_size=batch_size)
         print('Train dataset is loaded')
@@ -150,6 +185,8 @@ class StyleTransferModel:
         features_style = vgg(utils.normalize_batch(style))
         gram_style = [utils.gram_matrix(y) for y in features_style]
         print('Epochs = ', epochs)
+
+        # тренируем модель
         for e in range(epochs):
             transformer.train()
             agg_content_loss = 0.
