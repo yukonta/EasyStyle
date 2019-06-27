@@ -5,7 +5,7 @@ from torchvision import models
 
 
 class Vgg16(torch.nn.Module):
-    def __init__(self, requires_grad=False):
+    def __init__(self, requires_grad=False, layers_to_unfreeze = 5):
         super(Vgg16, self).__init__()
         vgg_pretrained_features = models.vgg16(pretrained=True).features
         self.slice1 = torch.nn.Sequential()
@@ -21,15 +21,13 @@ class Vgg16(torch.nn.Module):
         for x in range(16, 23):
             self.slice4.add_module(str(x), vgg_pretrained_features[x])
 
-
-        layers_to_unfreeze = 5 # Fine Tuning
-        for param in vgg_pretrained_features[:-layers_to_unfreeze].parameters():
-            param.requires_grad = False
+        if not requires_grad:
+             for param in vgg_pretrained_features[:-layers_to_unfreeze].parameters():  # Fine Tuning
+                 param.requires_grad = False
 
         #if not requires_grad:
-         #   for param in self.parameters():
-         #        param.requires_grad = False
-
+        #   for param in self.parameters():
+        #        param.requires_grad = False
 
     def forward(self, X):
         h = self.slice1(X)
