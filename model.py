@@ -25,7 +25,6 @@ from neural_style.vgg import Vgg16
 
 class StyleTransferModel:
     def __init__(self):
-        # Сюда необходимо перенести всю иницализацию, вроде загрузки свеерточной сети и т.д.
 
         use_gpu = torch.cuda.is_available()
         if not use_gpu:
@@ -38,7 +37,6 @@ class StyleTransferModel:
         self.device = torch.device("cuda" if use_gpu else "cpu")
         print(self.device)
 
-        # imsize = 128
         imsize = 256
         self.loader = transforms.Compose([
             transforms.Resize(imsize),  # нормируем размер изображения
@@ -54,7 +52,6 @@ class StyleTransferModel:
         # и потом уже приводить их к PIL, а потом и к тензору, который уже можно отдать модели.
 
         style_img = Image.open(style_img_stream)
-        # self.train(dataset = 'neural_style/dataset_dir', style_img = style_img, save_model_dir = 'neural_style/save_model_dir', checkpoint_model_dir = 'neural_style/checkpoint_model_dir', epochs=2, batch_size=4, image_size=256, seed=42, arg_cuda=0, content_weight=1e5, style_weight=1e10, lr=1e-3, log_interval=500, checkpoint_interval=2000)
         if (style_type == 'own'):
             fin_model_dict = self.train(dataset='neural_style/dataset_dir', style_img=style_img,
                                         save_model_dir='neural_style/save_model_dir',
@@ -70,7 +67,7 @@ class StyleTransferModel:
         return misc.toimage(self.process_image(content_img_stream, fin_model_dict)[0])
 
     def process_image(self, img_stream, fin_model_dict):
-        device = self.device
+        #device = self.device
         image = Image.open(img_stream)
         image = self.loader(image)
 
@@ -88,7 +85,7 @@ class StyleTransferModel:
         device = torch.device("cuda" if arg_cuda else "cpu")
 
         # content_image = utils.load_image(args.content_image, scale = content_scale)
-        content_image = content_img  # NNN
+        content_image = content_img
 
         if scale is not None:
             content_image = content_image.resize(
@@ -102,8 +99,8 @@ class StyleTransferModel:
         with torch.no_grad():
             style_model = TransformerNet()
 
-            # state_dict = torch.load(model_file_name) #NNN
-            state_dict = fin_model_dict  # NNN
+            # state_dict = torch.load(model_file_name)
+            state_dict = fin_model_dict
 
             # remove saved deprecated running_* keys in InstanceNorm from the checkpoint
             for k in list(state_dict.keys()):
@@ -139,13 +136,13 @@ class StyleTransferModel:
         transformer = TransformerNet().to(device)
         optimizer = Adam(transformer.parameters(), lr)
         mse_loss = torch.nn.MSELoss()
-        vgg = Vgg16(requires_grad=False).to(device)
+        vgg = Vgg16(requires_grad=False, layers_to_unfreeze=5).to(device)
         style_transform = transforms.Compose([
             transforms.ToTensor(),
             transforms.Lambda(lambda x: x.mul(255))
         ])
-        # style = utils.load_image(args.style_image, size= None) # NNN
-        style = style_img  # NNN
+        # style = utils.load_image(args.style_image, size= None)
+        style = style_img
 
         style = style_transform(style)
         style = style.repeat(batch_size, 1, 1, 1).to(device)

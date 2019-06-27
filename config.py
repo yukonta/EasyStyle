@@ -1,3 +1,5 @@
+#ProxyURL = 'socks4://54.38.110.35:48034'
+#ProxyURL = 'socks4://213.32.108.123:443'
 ProxyURL = 'socks4://51.38.66.6:1080'
 StartMsg = 'Hi! I want to help you to make wonderfull pictures!\n\nWe can stylize your images.\n\nPlease chose - use the existing style or your OWN STYLE\n(OWN styling takes about 10 minutes).'
 WantTalkMsg1 = 'Good! Please send me an image of content. \nOr send /cancel if you don\'t want to.'
