@@ -19,6 +19,8 @@ If you use pip (without Anaconda) run the command:
 
 pip install -r requirements.txt
 
+For computers without GPU  - use the file requirements-cpu.txt (rename it to requirements.txt)
+
 Then do the following:
 1) git clone --quiet https://github.com/yukonta/EasyStyle  
 2) In the catalog EasyStyle download the file telegram_token.py which contains the telegram-token в формате token = '\<token\>'
