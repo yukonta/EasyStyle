@@ -41,7 +41,7 @@ class StyleTransferModel:
         imsize = 256
         self.loader = transforms.Compose([
             transforms.Resize(imsize),  # нормируем размер изображения
-            transforms.CenterCrop(imsize),
+            ##transforms.CenterCrop(imsize),
             #    transforms.ToTensor()
         ])  # превращаем в удобный формат
 
@@ -140,9 +140,7 @@ class StyleTransferModel:
         transformer = TransformerNet().to(device)
         optimizer = Adam(transformer.parameters(), lr)
         mse_loss = torch.nn.MSELoss()
-
         vgg = Vgg16(requires_grad=False).to(device)
-
         style_transform = transforms.Compose([
             transforms.ToTensor(),
             transforms.Lambda(lambda x: x.mul(255))

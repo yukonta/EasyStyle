@@ -1,9 +1,9 @@
-﻿from model import StyleTransferModel
+from model import StyleTransferModel
 from neural_style.transformer_net import TransformerNet
 
 import telebot
 from telegram_token import token
-from config import ProxyURL, StartMsg, WantTalkMsg1, WantTalkMsg2, CancelMsg, SndPict2Msg, WaitStylingMsg, WaitStylingMsg10min, NextActMsg
+from config import ProxyURL, StartMsg, WantTalkMsg1, WantTalkMsg2, CancelMsg, WaitStylingMsg, WaitStylingMsg10min, NextActMsg
 import numpy as np
 from PIL import Image
 from io import BytesIO
@@ -112,7 +112,6 @@ def send_prediction_on_photo_own(bot, update):
     else:
         print('    -the first (content) image')
         first_image_file[chat_id] = image_file
-        update.message.reply_text(SndPict2Msg)
         return NEXT_PHOTO
 
 
@@ -127,6 +126,8 @@ def send_prediction_on_photo_candy(bot, update):
     print('    -the content image')
     content_image_stream = BytesIO()
     image_file.download(out=content_image_stream)
+
+
     style_type = 'candy'
     output = model.transfer_style(content_image_stream, content_image_stream, style_type)
     # теперь отправим назад фото
