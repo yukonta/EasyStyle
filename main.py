@@ -129,8 +129,7 @@ def send_prediction_on_photo_candy(bot, update):
     image_file.download(out=content_image_stream)
 
     text = update.message.text
-    print('11',text)
-
+  
     style_type = 'candy'
     output = model.transfer_style(content_image_stream, content_image_stream, style_type)
     # теперь отправим назад фото
